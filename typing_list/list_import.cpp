@@ -1,111 +1,91 @@
 #include "head.h"
 
-void m_import() {
+void list_import() {
 
-	m_node *m_head = (m_node*)calloc(1, sizeof(m_node));
-	m_node *m_tail = (m_node*)calloc(1, sizeof(m_node));
-	m_node *m_p = (m_node*)calloc(1, sizeof(m_node));
-	m_head = NULL;
+	char ans2[20];
+	int ans1, ans3 = 0;
 
-	fp = fopen("user.txt", "rt");
-	while(1){
-		if (feof(fp)) {
-			break;
-		}
-		m_node *m_p = (m_node*)calloc(1, sizeof(m_node));
-		fscanf(fp, "%s %d %d %d\n", m_p->name, &m_p->date, &m_p->id, &m_p->grade);
-		if (m_head == NULL) {
-			m_head = m_p;
-			m_tail = m_p;
+	system("cls");
+	UI();
+	gotoxy(2, 1);
+	printf("                                                   명부 작성                                                      \n");
+	gotoxy(2, 2);
+	printf("─────────────────────────────────────────────────────────\n");
+
+	gotoxy(2, 5);
+	printf("개인정보 수집 동의 여부를 입력해주세요.(1 = 동의, 2 = 거부) : ");
+	scanf("%d", &ans1);
+
+	gotoxy(2, 6);
+	printf("거주지를 입력해주세요 : ");
+	scanf("%s", ans2);
+
+	gotoxy(2, 7);
+	printf("연락처를 입력해주세요 : (010을 제외한 8자리 입력) : ");
+	scanf("%d", &ans3);
+
+	int temp_date = 0;
+	char temp_time[20] = "\0";
+
+	time_t timer;
+	struct tm *t;
+
+	timer = time(NULL); // 현재 시각을 초 단위로 얻기
+	t = localtime(&timer); // 초 단위의 시간을 분리하여 구조체에 넣기
+
+	char s1[50] = "\0";
+	char s2[10] = "\0";
+	char s3[10] = "0";
+	//현재 년 t->tm_year + 1900
+	sprintf(s1, "%d", t->tm_year+1900);
+	//현재 월 t->tm_mon + 1
+	sprintf(s2, "%d", t->tm_mon+1);
+	strcat(s1, s2);
+	//현재 일 t->tm_mday
+	sprintf(s2, "%d", t->tm_mday);
+	strcat(s1, s2);
+
+	temp_date = atoi(s1);
+
+	strcpy(s1, "\0");
+	strcpy(s2, "\0");
+	strcpy(s3, "0");
+
+	//현재 시 t->tm_hour
+	int temp = 0;
+	temp = t->tm_hour;
+	if (temp < 10) {
+		sprintf(s1, "%d", temp);
+		strcat(s3, s1);
+		strcpy(temp_time, s3);
+	}
+	else {
+		sprintf(s1, "%d", temp);
+		strcpy(temp_time, s1);
+	}
+		//현재 분 t->tm_min
+	strcpy(s1, "\0");
+	strcpy(s2, "\0");
+	strcpy(s3, "0");
+		temp = t->tm_min;
+		if (temp < 10) {
+			sprintf(s2, "%d", t->tm_min);
+			strcat(s3, s2);
+			strcat(temp_time, s3);
 		}
 		else {
-			m_tail->link = m_p;
-			m_tail = m_p;
+			sprintf(s2, "%d", t->tm_min);
+			strcat(temp_time, s2);
 		}
+
+		fp = fopen("list.txt", "at");
+		fprintf(fp, "%d %s %d %s %d\n", temp_date, temp_time, ans1, ans2, ans3);
+		fclose(fp);
+
+		gotoxy(2, 11);
+		printf("저장이 완료되었습니다.");
+		Sleep(1000);
+
+		MUI();
+
 	}
-	fclose(fp);
-
-	char ans = 0;
-
-	char ans1[20];
-	int ans2, ans3, ans4 = 0;
-	int count = 0;
-	int i = 0;
-
-	for (;;) {
-		system("cls");
-		UI();
-		gotoxy(2, 1);
-		printf("                                                   회원 등록                                                      \n");
-		gotoxy(2, 2);
-		printf("─────────────────────────────────────────────────────────\n");
-
-		gotoxy(2, 5);
-		printf("이름을 입력하세요 : ");
-		scanf("%s", ans1);
-
-		gotoxy(2, 6);
-		printf("생년월일을 입력하세요 : ");
-		scanf("%d", &ans2);
-
-		while (1) {
-			gotoxy(2, 7);
-			printf("학번를 입력하세요 : ");
-			scanf("%d", &ans3);
-			for (m_p = m_head; m_p != NULL; m_p = m_p->link) {
-				if (ans3 == m_p->id){
-					system("cls");
-					UI();
-					gotoxy(2, 1);
-					printf("                                                   회원 추가                                                      \n");
-					gotoxy(2, 2);
-					printf("─────────────────────────────────────────────────────────\n");
-					gotoxy(2, 7);
-					printf("이미 가입된 회원입니다.");
-					Sleep(1500);
-					printmenu_a();
-				}
-			}
-			break;
-		}
-
-		gotoxy(2, 8);
-		printf("학년을 입력하세요 : ");
-		scanf("%d", &ans4);
-
-		count++;
-		gotoxy(2, 9);
-		printf("저장하겠습니까? Y = 계속, N = 메뉴화면으로 : ");
-
-		gotoxy(2, 10);
-		ans = _getch();
-
-		if (ans == 'Y' || ans == 'y' || ans == 'ㅛ') {
-			i++;
-			fp = fopen("user.txt", "at");
-			fprintf(fp, "%s %d %d %d\n", ans1,ans2,ans3,ans4);
-			fclose(fp);
-			gotoxy(2, 11);
-			printf("저장이 완료되었습니다.");
-			Sleep(1000);
-			printmenu_a();
-		}
-		if (ans == 'N' || ans == 'n' || ans == 'ㅜ') {
-			gotoxy(2, 11);
-			printf("이전화면으로 이동합니다.");
-			Sleep(1000);
-			printmenu_a();
-		}
-		else {
-			system("cls");
-			UI();
-			gotoxy(2, 1);
-			printf("잘못된 입력입니다.\n");
-			Sleep(1000);
-			printmenu_a();
-		}
-	}
-
-	printmenu_a();
-
-}

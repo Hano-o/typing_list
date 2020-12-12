@@ -120,6 +120,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gotoxy.cpp" />
+    <ClCompile Include="list_delete.cpp" />
+    <ClCompile Include="list_import.cpp" />
+    <ClCompile Include="list_modify.cpp" />
+    <ClCompile Include="list_search.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>

@@ -1,9 +1,4 @@
 #include "head.h"
-void gotoxy(int x, int y)
-{
-	COORD pos = { x,y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
 void UI() {
 
 	int i, j = 1;
@@ -69,7 +64,7 @@ void MUI() {
 	scanf("%d", &num);
 
 	if (num == 1)
-		list_insert();
+		list_import();
 	else if (num == 2)
 		list_modify();
 	else if (num == 3)
@@ -85,4 +80,5 @@ void MUI() {
 		system("cls");
 		MUI();
 
+	}
 }
