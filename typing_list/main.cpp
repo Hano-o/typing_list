@@ -1,8 +1,8 @@
-#include <stdio.h>
+#include "head.h"
 
 int main() {
 
-	printf("Test");
+	MUI();
 
 	return 0;
 }
