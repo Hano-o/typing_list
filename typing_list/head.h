@@ -28,3 +28,9 @@ void list_search();
 void list_delete();
 void list_modify();
 void gotoxy(int x, int y);
+
+
+#define LEFT 75
+#define RIGHT 77
+#define UP 72
+#define DOWN 80
